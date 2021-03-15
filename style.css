@@ -1,0 +1,54 @@
+.areaPrincipal {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 98vw;
+    height: 50vh;
+}
+
+.paineis {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 700px;
+    height: 200px;
+    background-color: black;
+}
+
+.painel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 100px;
+    height: 70px;
+    background-color: red;
+}
+
+.painel:active {
+    background-color: white;
+}
+
+#rodada {
+    display: flex;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+span {
+    color:cornflowerblue;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+}
+
+#inicia {
+    background-color: rgb(74, 148, 74);
+    border: none;
+    width: 100px;
+    height: 30px;
+    border-radius: 40px;
+}
