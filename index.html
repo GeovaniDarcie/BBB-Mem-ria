@@ -2,25 +2,22 @@
 <html lang="en">
 
 <head>
-    <script defer src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>BBB</title>
+    <title>Main</title>
 </head>
 
 <body>
-    <h2 id="rodada">Rodada: &nbsp<span>0</span></h2>
-    <div class="areaPrincipal">
-        <div class="paineis">
-            <div class="painel">1</div>
-            <div class="painel">2</div>
-            <div class="painel">3</div>
-            <div class="painel">4</div>
-            <div class="painel">5</div>
-        </div>
+    <div class="painel">
+
+        <script src="script.js"></script>
+        <script>
+            memory.init(document.querySelector('.painel'));
+            memory.start();
+        </script>
     </div>
-    <footer>
-        <button id="inicia">Iniciar</button>
-    </footer>
 </body>
 
 </html>

@@ -1,110 +1,83 @@
-const paineis = document.querySelectorAll('.painel');
-const iniciar = document.querySelector('#inicia')
-let rodada = document.querySelector('span')
+const memory = {
+    board: ['', '', '', ''],
+    sequence: [],
+    interface: '',
+    move: 0,
+    total_move: 0,
+    interval: 1000,
 
-let guardaSequencia = [];
-let limiteRodada = 0;
-let atual = 0;
-let notasMusicais = ['sine', 'square', 'triangle', 'sawtooth', 'triangle'];
-let sequencia = {};
+    random_number() {
+        let random = '';
 
-function geraSequencia() {
-    let first = Math.floor(Math.random() * 5);
-    sequencia = { numero: first, nota: notasMusicais[first] }
-    guardaSequencia.push(sequencia);
-    limiteRodada = guardaSequencia.length;
-    rodada.innerHTML = limiteRodada
-}
+        random = Math.floor(Math.random() * 4);
+        this.sequence.push(random);
+    },
 
-function acende() {
-    let i = 1;
-    guardaSequencia.map(x => {
+    start() {
+        this.interface_container();
+        this.draw();
+        this.initial();
+    },
+
+    initial() {
+        this.move = 0;
+        this.random_number();
+        this.timer_turn_on();
+    },
+
+    timer_turn_on() {
+        this.interval = this.interval > 3000 ? 1000 : this.interval;
+        this.sequence.forEach(item => {
+            setTimeout(() => {
+                this.turn_on(item)
+            }, this.interval += 2000);
+        });
+
+    },
+
+    turn_on(index) {
+        this.interface[index].style.border = '10px solid white';
+
         setTimeout(() => {
-            paineis[x.numero].style.border = "solid white";
-            toca(x.nota);
-        }, i * 1000)
-        i++;
-    })
-}
+            this.turn_off(index)
+        }, 1000);
+    },
 
-function apaga() {
-    let i = 1;
-    guardaSequencia.map(x => {
-        setTimeout(() => {
-            paineis[x.numero].style.border = "";
-        }, i * 1000)
-        i++;
-    })
-}
+    turn_off(index) {
+        this.interface[index].style.border = '';
+    },
 
-function clicou(event) {
-    let numeroTela = guardaSequencia[atual].numero + 1;
-    if (event.target.innerText == numeroTela) {
-        toca(notasMusicais[event.target.innerText - 1]);
-        atual++;
+    play(index) {
+        this.total_move = this.sequence.length;
 
-        if (limiteRodada == atual) {
-            atual = 0;
-            main();
+        if (this.move <= this.total_move) {
+            if (this.sequence[this.move] == index) {
+                this.move++;
+                if (this.move === this.total_move) {
+                    console.log(this.sequence);
+                    console.log('acertou');
+                    this.initial();
+                }
+            } else {
+                console.log('errou!');
+            }
         }
-    } else {
-        if (Number(event.target.innerText)) {
-            alert('ERROU FIOTE!');
-            guardaSequencia = [];
-            atual = 0;
-            sequencia = {};
-            context = null;
+    },
+
+    init(container) {
+        this.container_element = container;
+    },
+
+    draw() {
+        let content = '';
+        for (i in this.board) {
+            content += `<div onclick="memory.play(${i})">${i}</div>`
         }
+
+        this.container_element.innerHTML = content;
+    },
+
+    interface_container() {
+        this.interface = this.container_element.children;
     }
 }
-
-function main() {
-    geraSequencia();
-    acende();
-    setTimeout(apaga, 1000);
-}
-
-addEventListener('click', clicou);
-
-
-let context,
-    oscillator,
-    contextGain,
-    x = 1,
-    type = '';
-
-function start() {
-    context = new AudioContext();
-    oscillator = context.createOscillator();
-    contextGain = context.createGain();
-
-    oscillator.type = type;
-    oscillator.connect(contextGain);
-    contextGain.connect(context.destination);
-    oscillator.start(0);
-}
-
-function stop() {
-    start();
-    contextGain.gain.exponentialRampToValueAtTime(
-        0.00001, context.currentTime + x
-    )
-
-    if (context.currentTime == 0) {
-        context.currentTime += x
-    }
-}
-
-function inicia() {
-    main();
-}
-
-iniciar.addEventListener('click', inicia)
-
-function toca(nota) {
-    console.log(nota);
-    type = nota;
-    stop();
-};
-
-
